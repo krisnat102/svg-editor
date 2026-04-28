@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="SVG_Editor/SVG_Editor.vcxproj" Id="3326e10b-0897-40a5-bb3f-7f47e730650e" />
+</Solution>

@@ -13,13 +13,15 @@ public:
 	void readFile(std::string fileName);
 	void createFile(std::string name);
 
-private:
 	std::vector<Figure*> canvas;
 
+private:
 	Figure* stringToFigure(std::string strFigure) const;
-	std::vector<std::string> split(std::string str) const;
+	std::vector<std::string> splitStr(std::string str) const;
 	std::string extractAtrValue(const std::string token) const;
 };
+
+#pragma region FileManager Methods
 
 void FileManager::readFile(std::string fileName) {
 	std::ifstream file(fileName, std::ios::in);
@@ -29,16 +31,17 @@ void FileManager::readFile(std::string fileName) {
 		return;
 	}
 
-	std::string token;
-
+	bool readFigures = false;
 	std::string line;
 	while (std::getline(file, line)) { 
 		if (line.find("</svg>") != std::string::npos) break; // stops when it reaches the end of the figures
 
-		if (line.find("<rect") != std::string::npos || line.find("<ellipse") != std::string::npos) { // change this to not have to add new figures
+		if (line.find("<svg>") != std::string::npos) readFigures = true;
+
+		while (readFigures) {
 			Figure* figure = stringToFigure(line);
 
-			if (figure != nullptr) { 
+			if (figure != nullptr) {
 				canvas.push_back(figure);
 			}
 		}
@@ -46,7 +49,7 @@ void FileManager::readFile(std::string fileName) {
 }
 
 Figure* FileManager::stringToFigure(std::string strFigure) const {
-	std::vector<std::string> substrings = split(strFigure); // divides the string by whitespaces
+	std::vector<std::string> substrings = splitStr(strFigure); // divides the string by whitespaces
 
 	std::string shapeType = substrings[0];
 
@@ -86,7 +89,7 @@ std::string FileManager::extractAtrValue(const std::string token) const
 	return token.substr(start, end - start);
 }
 
-std::vector<std::string> FileManager::split(std::string str) const { //rework so it doesnt crash when theres a space inside the color attribute
+std::vector<std::string> FileManager::splitStr(std::string str) const { //rework so it doesnt crash when theres a space inside the color attribute
 	const char WHITESPACE = ' ';
 
 	std::vector<std::string> tokens;
@@ -102,3 +105,19 @@ std::vector<std::string> FileManager::split(std::string str) const { //rework so
 	tokens.push_back(str.substr(start));
 	return tokens;
 }
+
+#pragma endregion
+
+class CommandManager {
+public:
+	CommandManager(FileManager* file)
+		:file(file) {
+	}
+
+	void print() const;
+	void create();
+	void translate(std::string param) const;
+	void within(std::string option) const;
+private:
+	FileManager* file;
+};
