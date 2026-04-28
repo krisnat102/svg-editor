@@ -1,7 +1,7 @@
-﻿  Figure.cpp
-SVGManager.obj : error LNK2005: "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Rectangle::info(void)const " (?info@Rectangle@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ) already defined in Figure.obj
-SVGManager.obj : error LNK2005: "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Ellipse::toString(void)const " (?toString@Ellipse@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ) already defined in Figure.obj
-SVGManager.obj : error LNK2005: "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Line::toString(void)const " (?toString@Line@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ) already defined in Figure.obj
-SVGManager.obj : error LNK2005: "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Rectangle::toString(void)const " (?toString@Rectangle@@UEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ) already defined in Figure.obj
-SVGManager.obj : error LNK2005: main already defined in Figure.obj
-C:\Users\Chris\source\repos\SVG_Editor\x64\Debug\SVG_Editor.exe : fatal error LNK1169: one or more multiply defined symbols found
+﻿  main.cpp
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(98,17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(99,15): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(116,15): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(147,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(148,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+  SVG_Editor.vcxproj -> C:\Users\Chris\source\repos\svg-editor\x64\Debug\SVG_Editor.exe

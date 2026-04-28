@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\Chris\source\repos\SVG_Editor\x64\Debug\SVG_Editor.exe</FullPath>
+      <FullPath>C:\Users\Chris\source\repos\svg-editor\x64\Debug\SVG_Editor.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

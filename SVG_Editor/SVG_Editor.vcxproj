@@ -140,7 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Figure.cpp" />
-    <ClCompile Include="SVGManager.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Figure.h" />
+    <ClInclude Include="Managers.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Figures.svg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
