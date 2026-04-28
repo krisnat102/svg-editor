@@ -13,6 +13,8 @@ public:
     virtual std::string toString() const = 0;
     virtual std::string info() const = 0;
     virtual void move(unsigned x, unsigned y);
+    virtual bool isWithinRectangle(unsigned rx, unsigned ry, unsigned rw, unsigned rh) const = 0;
+    virtual bool isWithinCircle(unsigned cx, unsigned cy, unsigned r) const = 0;
 
 protected:
     unsigned x, y;
@@ -30,6 +32,8 @@ public:
 
     virtual std::string toString() const override;
     virtual std::string info() const override;
+    virtual bool isWithinRectangle(unsigned rx, unsigned ry, unsigned rw, unsigned rh) const override;
+    virtual bool isWithinCircle(unsigned cx, unsigned cy, unsigned r) const override;
 
 private:
     unsigned sizeX, sizeY;
@@ -48,6 +52,8 @@ public:
 
     virtual std::string toString() const override;
     virtual std::string info() const override;
+    virtual bool isWithinRectangle(unsigned rx, unsigned ry, unsigned rw, unsigned rh) const override;
+    virtual bool isWithinCircle(unsigned cx, unsigned cy, unsigned r) const override;
 
 private:
     unsigned radiusX, radiusY;
@@ -66,6 +72,8 @@ public:
 
     virtual std::string toString() const override;
     virtual std::string info() const override;
+    virtual bool isWithinRectangle(unsigned rx, unsigned ry, unsigned rw, unsigned rh) const override;
+    virtual bool isWithinCircle(unsigned cx, unsigned cy, unsigned r) const override;
 
 private:
     unsigned x2, y2, strokeWidth;

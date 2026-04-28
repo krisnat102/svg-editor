@@ -11,7 +11,8 @@ using std::vector;
 using std::string;
 
 #pragma region FileManager Methods
-void FileManager::readFile() {
+void FileManager::openFile(std::string fileStr) {
+	fileName = fileStr;
 	std::ifstream file(fileName, std::ios::in);
 
 	if (!file.is_open()) {
@@ -22,9 +23,7 @@ void FileManager::readFile() {
 	bool readFigures = false;
 	string line;
 	while (std::getline(file, line)) {
-		if (line.find("</svg>") != string::npos) break; // stops when it reaches the end of the figures
-
-		if (line.find("<svg>") != string::npos) readFigures = true;
+		if (line.find("</svg") != string::npos) break; // stops when it reaches the end of the figures
 
 		if (readFigures) {
 			Figure* figure = stringToFigure(line);
@@ -33,14 +32,30 @@ void FileManager::readFile() {
 				canvas.push_back(figure);
 			}
 		}
+
+		if (line.find("<svg") != string::npos) readFigures = true; // starts reading only when it reaches the figures
 	}
+
+	std::cout << "Successfully opened " << fileName << std::endl;
+}
+
+void FileManager::closeFile()
+{
+	if (fileName != "") std::cout << "Successfully closed " << fileName << std::endl;
+	else {
+		std::cout << "No file open. Invalid command" << std::endl;
+		return;
+	}
+
+	fileName = "";
+	canvas.clear();
 }
 
 Figure* FileManager::stringToFigure(string strFigure) const {
 	string shapeType;
-	if (strFigure.find("<rect") != string::npos) shapeType = "rect";
-	else if (strFigure.find("<ellipse") != string::npos) shapeType = "ellipse";
-	else if (strFigure.find("<line") != string::npos) shapeType = "line";
+	if (strFigure.find("rect") != string::npos) shapeType = "rect";
+	else if (strFigure.find("ellipse") != string::npos) shapeType = "ellipse";
+	else if (strFigure.find("line") != string::npos) shapeType = "line";
 	else return nullptr;
 
 	string color = "black";
@@ -48,7 +63,7 @@ Figure* FileManager::stringToFigure(string strFigure) const {
 	unsigned values[4] = { 0, 0 ,0 ,0 };
 	vector<string> substrings = splitStr(strFigure);
 
-	getValues(substrings, values);
+	getValues(substrings, values, &color, &strokeWidth);
 
 	if (shapeType == "rect") {
 		return new Rectangle(values[0], values[1], values[2], values[3], color);
@@ -64,7 +79,7 @@ Figure* FileManager::stringToFigure(string strFigure) const {
 	return nullptr;
 }
 
-void FileManager::getValues(const vector<string> substrings, unsigned* values) const {
+void FileManager::getValues(const vector<string> substrings, unsigned* values, string* color, unsigned* strokeWidth) const {
 	for (unsigned i = 0; i < substrings.size(); i++) {
 		string valStr = extractAtrValue(substrings[i]);
 
@@ -91,6 +106,13 @@ void FileManager::getValues(const vector<string> substrings, unsigned* values) c
 			values[3] = value;
 		}
 
+		if (substrings[i].find("fill") == 0) {
+			*color = valStr;
+		}
+
+		if (substrings[i].find("stroke-width") == 0) {
+			*strokeWidth = (unsigned)std::abs(std::stoi(valStr));
+		}
 	}
 }
 
@@ -135,6 +157,30 @@ void CommandManager::erase(string param) {
 	file.canvas.erase(file.canvas.begin() + i);
 }
 
+void CommandManager::create(const std::vector<std::string> param) {
+	if (param.size() < 5) return;
+
+	string str;
+	str += param[0] + " ";
+	str += "x='" + param[1] + "' "; // we assign these so we can reuse string to figure and they get recognized 
+	str += "y='" + param[2] + "' ";
+	str += "width='" + param[3] + "' ";
+	str += "height='" + param[4] + "' ";
+
+	if (param.size() == 6) { // assings the final value that depends on the type of object
+		if (param[0] == "line" && param.size() == 6) {
+			str += "stroke-width='" + param[5] + "'";
+		}
+		else {
+			str += "fill='" + param[5] + "'";
+		}
+	}
+
+	std::cout << str;
+
+	file.canvas.push_back(file.stringToFigure(str));
+}
+
 void CommandManager::translateParamToCoords(const vector<string> param, unsigned& x, unsigned& y, int& n) const {
 	unsigned i = 0;
 
@@ -174,24 +220,58 @@ void CommandManager::translate(const vector<string> param) const {
 }
 
 void CommandManager::within(const vector<string> option) const {
-	if (option[0] == "circle") {
+	if (option.size() == 0) return;
 
+	bool isEmpty = true;
+
+	if (option[0] == "circle" && option.size() == 4) {
+		unsigned cx = (unsigned)std::abs(std::stoi(option[1]));
+		unsigned cy = (unsigned)std::abs(std::stoi(option[2]));
+		unsigned r = (unsigned)std::abs(std::stoi(option[3]));
+
+		for (unsigned i = 0; i < file.canvas.size(); i++) {
+			if (file.canvas[i]->isWithinCircle(cx, cy, r)) {
+				std::cout << file.canvas[i]->info() << std::endl;
+				isEmpty = false;
+			}
+		}
+
+		if (isEmpty) {
+			std::cout << "No figures are located within circle " << cx << " " << cy << " " << r;
+		}
 	}
-	else if (option[0] == "rectangle") {
+	else if (option[0] == "rectangle" && option.size() == 5) {
+		unsigned x = (unsigned)std::abs(std::stoi(option[1]));
+		unsigned y = (unsigned)std::abs(std::stoi(option[2]));
+		unsigned width = (unsigned)std::abs(std::stoi(option[3]));
+		unsigned heigt = (unsigned)std::abs(std::stoi(option[3]));
 
+		for (unsigned i = 0; i < file.canvas.size(); i++) {
+			if (file.canvas[i]->isWithinRectangle(x, y, width, heigt)) {
+				std::cout << file.canvas[i]->info() << std::endl;
+				isEmpty = false;
+			}
+		}
+
+		if (isEmpty) {
+			std::cout << "No figures are located within rectangle " << x << " " << y << " " << width << " " << heigt;
+		}
 	}
 }
 
 int main() {
 	FileManager file = FileManager("Figures.svg");
-	file.readFile();
+	file.openFile();
 	CommandManager manager = CommandManager(file);
 	manager.print();
 	std::cout << std::endl;
 	vector<string> test;
-	test.push_back("2");
-	test.push_back("horizontal=10");
-	test.push_back("vertical=10");
-		manager.translate(test);
-		manager.print();
+	test.push_back("line");
+	test.push_back("0");
+	test.push_back("0");
+	test.push_back("150");
+	test.push_back("150");
+	test.push_back("5");
+	manager.create(test);
+	manager.print();
 }

@@ -8,4 +8,5 @@
   <rect x="5" y="5" width="10" height="10" fill="green" />
   <ellipse cx="-5" cy="-5" rx="10" ry="15" fill="blue" />
   <rect x="100" y="60" width="10" height="10" fill="red" />
+  <rect x1="10" y1="60" x2="10" y2="50" stroke-width="5" />
 </svg>

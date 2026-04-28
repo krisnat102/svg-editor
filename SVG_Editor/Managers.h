@@ -3,20 +3,20 @@
 class FileManager {
 public:
 
-	FileManager(std::string fileName)
-		:fileName(fileName) {
+	FileManager(){
 	}
 
-	void readFile();
+	void openFile(std::string fileName);
 	void createFile(std::string name);
+	void closeFile();
+	Figure* stringToFigure(std::string strFigure) const;
 
 	std::vector<Figure*> canvas;
 
 private:
 	std::string extractAtrValue(const std::string token) const;
-	Figure* stringToFigure(std::string strFigure) const;
 	std::vector<std::string> splitStr(std::string str) const;
-	void getValues(const std::vector<std::string> substrings, unsigned* values) const;
+	void getValues(const std::vector<std::string> substrings, unsigned* values, std::string* color, unsigned* strokeWidth) const;
 
 	std::string fileName;
 };
@@ -28,8 +28,8 @@ public:
 	}
 
 	void print() const;
-	void erase(std::string param);
-	void create();
+	void erase(const std::string param);
+	void create(const std::vector<std::string> param);
 	void translate(const std::vector<std::string> param) const;
 	void within(const std::vector < std::string> option) const;
 
