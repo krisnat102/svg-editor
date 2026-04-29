@@ -1,7 +1,16 @@
 ﻿  main.cpp
-C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(105,17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(106,15): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(123,15): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(177,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\Chris\source\repos\svg-editor\SVG_Editor\main.cpp(178,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Managers.h(34,21): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+  Manager.cpp
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Managers.h(34,21): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+  (compiling source file 'Manager.cpp')
+  
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(198,17): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(199,15): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(216,15): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(234,8): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(377,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\Chris\source\repos\svg-editor\SVG_Editor\Manager.cpp(378,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+  Generating Code...
   SVG_Editor.vcxproj -> C:\Users\Chris\source\repos\svg-editor\x64\Debug\SVG_Editor.exe
