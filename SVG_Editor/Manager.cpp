@@ -33,7 +33,7 @@ void FileManager::openFile(std::string fileStr) {
 	bool readFigures = false;
 	string line;
 	while (std::getline(file, line)) {
-		if (line.find("</svg") != string::npos) break; // stops when it reaches the end of the figures
+		if (line.find("</svg") != string::npos) break; // спира, когато стигне края на фигурите
 
 		if (readFigures) {
 			Figure* figure = stringToFigure(line);
@@ -43,7 +43,7 @@ void FileManager::openFile(std::string fileStr) {
 			}
 		}
 
-		if (line.find("<svg") != string::npos) readFigures = true; // starts reading only when it reaches the figures
+		if (line.find("<svg") != string::npos) readFigures = true; // започва да чете едва когато стигне до фигурите
 	}
 
 	std::cout << "Successfully opened " << fileName << std::endl;
@@ -64,13 +64,14 @@ void FileManager::saveAs(string newFilePath) {
 
 void FileManager::saveToFile(string fileToReadFrom, string fileToWriteInto) const {
 	std::ifstream inFile(fileToReadFrom);
-	vector<string> topHalf; // the part before the figures
+	vector<string> topHalf; // частта преди фигурите
 	string token;
 
+	// запазва всичко преди <svg> за да не изтрие част от файла, която не трябва
 	if (inFile.is_open()) {
 		while (std::getline(inFile, token)) {
 			topHalf.push_back(token);
-			if (token.find("<svg") != string::npos) { // stops when it reaches the beginning of the figures
+			if (token.find("<svg") != string::npos) { // спира, когато стигне началото на фигурите
 				break;
 			}
 		}
@@ -149,7 +150,7 @@ void FileManager::getValues(const vector<string> substrings, unsigned* values, s
 
 		// x, cx, x1
 		if (substrings[i].find("x=") == 0 || substrings[i].find("cx=") == 0 || substrings[i].find("x1=") == 0) {
-			unsigned value = (unsigned)std::abs(std::stoi(valStr)); // makes sure the value is always positive, because our coordinate system is only with positive numbers
+			unsigned value = (unsigned)std::abs(std::stoi(valStr)); // гарантира, че стойността винаги е положителна, защото нашата координатна система е само с положителни числа
 			values[0] = value;
 		}
 		// y, cy, y1
@@ -182,7 +183,7 @@ void FileManager::createFile(const std::string name) {
 
 	std::ofstream outFile(name);
 
-	std::cout << name << " file created";
+	std::cout << name << " file created" << std::endl;
 
 	outFile.close();
 }
@@ -195,16 +196,16 @@ void FileManager::deleteData() {
 }
 
 string FileManager::extractAtrValue(const string token) const {
-	unsigned start = token.find_first_of("'\"");
+	unsigned start = token.find_first_of("'\""); // намира първите кавички и взима стойността вътре
 	unsigned end = token.find_last_of("'\"");
-	++start; // skips the "
+	++start; // прескача "
 
 	if (start >= end) return "";
 
 	return token.substr(start, end - start);
 }
 
-vector<string> FileManager::splitStr(string str) const { //rework so it doesnt crash when theres a space inside the color attribute
+vector<string> FileManager::splitStr(string str) const {
 	const char WHITESPACE = ' ';
 
 	vector<string> tokens;
@@ -240,12 +241,12 @@ void CommandManager::create(const std::vector<std::string> param) {
 
 	string str;
 	str += param[0] + " ";
-	str += "x='" + param[1] + "' "; // we assign these so we can reuse string to figure and they get recognized 
+	str += "x='" + param[1] + "' "; // присвояваме ги, за да можем да преизползваме stringToFigure и да бъдат разпознати 
 	str += "y='" + param[2] + "' ";
 	str += "width='" + param[3] + "' ";
 	str += "height='" + param[4] + "' ";
 
-	if (param.size() == 6) { // assings the final value that depends on the type of object
+	if (param.size() == 6) { // присвоява крайната стойност, която зависи от типа на обекта
 		if (param[0] == "line" && param.size() == 6) {
 			str += "stroke-width='" + param[5] + "'";
 		}
@@ -297,28 +298,30 @@ void CommandManager::help() const {
 void CommandManager::startProgram() {
 	std::string input;
 
+	// в този цикъл върви цялата програма
 	while (true) {
 		std::cout << "> ";
 		std::getline(std::cin, input);
 
-		if (input == "exit") {
+		if (input == "exit") { // спира програмата ако получи команда exit 
 			std::cout << "Exiting program...";
 			break;
 		}
 
 		std::vector<std::string> tokens = file.splitStr(input);
 
-		if (tokens.size() == 0) continue;
+		if (tokens.size() == 0) continue; // игнорира празните команди
 
-		std::string command = tokens[0]; // the command word
+		std::string command = tokens[0]; // думата на командата
 
 		std::vector<std::string> params;
 
 		for (int i = 1; i < tokens.size(); i++) {
-			params.push_back(tokens[i]); // gets the params after the command
+			params.push_back(tokens[i]); // взима параметрите след командата
 		}
 
 		if (file.isOpen()) {
+			// избира коя команда да изпълни
 			if (command == "print") {
 				print();
 			}
@@ -351,7 +354,7 @@ void CommandManager::startProgram() {
 			else if (command == "close") {
 				close();
 			}
-			else {
+			else if (command != "open" || command != "help") {
 				std::cout << "Invalid command" << std::endl;
 			}
 		}
@@ -376,7 +379,7 @@ void CommandManager::translateParamToCoords(const vector<string> param, unsigned
 
 	unsigned equalPos1 = param[i].find("=");
 	unsigned equalPos2 = param[i + 1].find("=");
-	if (equalPos1 == string::npos || equalPos2 == string::npos) return; // skips if theres no =
+	if (equalPos1 == string::npos || equalPos2 == string::npos) return; // прескача, ако няма =
 
 	string strX = param[i].substr(equalPos1 + 1);
 	string strY = param[i + 1].substr(equalPos2 + 1);

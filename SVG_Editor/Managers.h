@@ -3,6 +3,7 @@
 #include <string>
 #include "Figure.h"
 
+// Отваря, чете и записва svg файла. Оправя се с динамичната памет на всички фигури
 class FileManager {
 public:
 
@@ -35,8 +36,8 @@ public:
 	}
 
 	void deleteFigureAt(unsigned n) {
-		delete canvas[n];
-		canvas.erase(canvas.begin() + n);
+		delete canvas[n]; //трие динамичната памет
+		canvas.erase(canvas.begin() + n); //премахва вече празния pointer
 	}
 
 	void addFigure(Figure* figure) {
@@ -55,6 +56,7 @@ private:
 	std::vector<Figure*> canvas;
 };
 
+// Приема команди от конзолата и вика правилния метод
 class CommandManager {
 public:
 	CommandManager() {

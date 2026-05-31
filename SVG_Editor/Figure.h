@@ -1,5 +1,6 @@
 #pragma once
 
+// Абстрактен клас на svg фигура
 class Figure {
 public:
     Figure(unsigned x, unsigned y)

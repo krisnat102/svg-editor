@@ -3,7 +3,7 @@
 #include "Figure.h"
 
 double getDistance(unsigned x1, unsigned y1, unsigned x2, unsigned y2) {
-    double dx = (double)x1 - (double)x2; // so that it doesnt overflow as unsigned
+    double dx = (double)x1 - (double)x2; // castваме ги като double за да не превърти unsigned
     double dy = (double)y1 - (double)y2;
     return std::sqrt(std::pow(dx, 2) + std::pow(dy, 2));
 }
@@ -12,7 +12,7 @@ double getDistance(unsigned x1, unsigned y1, unsigned x2, unsigned y2) {
 
 std::string Rectangle::toString() const {
     return "<rect x='" + std::to_string(x)
-        + "' y='" + std::to_string(y) 
+        + "' y='" + std::to_string(y)
         + "' width='" + std::to_string(sizeX)
         + "' height='" + std::to_string(sizeY)
         + "' fill='" + fillColor
@@ -72,7 +72,7 @@ std::string Line::toString() const {
         + "' y1='" + std::to_string(y)
         + "' x2='" + std::to_string(x2)
         + "' y2='" + std::to_string(y2)
-        + "' stroke-width='" + std::to_string(strokeWidth) 
+        + "' stroke-width='" + std::to_string(strokeWidth)
         + "' />";
 }
 
